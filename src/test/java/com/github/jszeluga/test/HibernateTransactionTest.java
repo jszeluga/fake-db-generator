@@ -2,10 +2,8 @@ package com.github.jszeluga.test;
 
 import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.util.HibernateTransaction;
-
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
-import org.junit.After;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class HibernateTransactionTest  {
+public class HibernateTransactionTest extends AbstractTest {
 
   @Test
   public void testHibernateTransaction() throws Exception {
@@ -42,10 +40,5 @@ public class HibernateTransactionTest  {
       assertEquals(5551234567L, customer2.getCustomerKey());
 
     });
-  }
-
-  @After
-  public void closeSessionFactory(){
-    HibernateTransaction.closeSessionFactory();
   }
 }
