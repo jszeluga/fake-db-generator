@@ -5,16 +5,7 @@ import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.entity.dimension.DeviceDimension;
 import com.github.jszeluga.entity.dimension.DispositionDimension;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -56,6 +47,9 @@ public class LteFact {
 
   @Column(name = "rsrp")
   private Double rsrp;
+
+  @Column(name = "dropped_call")
+  private boolean droppedCall;
 
   public long getId() {
     return id;
@@ -127,5 +121,13 @@ public class LteFact {
 
   public void setDisposition(final DispositionDimension disposition) {
     this.disposition = disposition;
+  }
+
+  public boolean isDroppedCall() {
+    return droppedCall;
+  }
+
+  public void setDroppedCall(boolean droppedCall) {
+    this.droppedCall = droppedCall;
   }
 }
