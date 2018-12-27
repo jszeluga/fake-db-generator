@@ -12,9 +12,12 @@ import java.util.function.Consumer;
 
 public class HibernateTransaction {
 
-  private static final Configuration config = new Configuration();
+  private static final SessionFactory sessionFactory;
 
   static {
+
+    Configuration config = new Configuration();
+
     //Dimensions
     config.addAnnotatedClass(CellDimension.class);
 //    config.addAnnotatedClass(CustomerDimension.class);
@@ -22,18 +25,23 @@ public class HibernateTransaction {
 
     //Entities
 //    config.addAnnotatedClass(LteFact.class);
+
+    sessionFactory = config.configure().buildSessionFactory();
   }
 
 
   public static void doWithSession(Consumer<Session> sessionFunc){
     if(sessionFunc!=null){
-      try (SessionFactory sessionFactory = config.configure().buildSessionFactory();
-            Session session = sessionFactory.openSession()){
+      try (Session session = sessionFactory.openSession()){
         Transaction transaction = session.beginTransaction();
         sessionFunc.accept(session);
         transaction.commit();
       }
     }
+  }
+
+  public static void closeSessionFactory(){
+    sessionFactory.close();
   }
 
 }
