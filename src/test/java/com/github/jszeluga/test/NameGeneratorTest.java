@@ -15,6 +15,7 @@ public class NameGeneratorTest {
         NameGenerator generator = new NameGenerator();
 
         assertNull(customer.getName());
+        generator.initialize();
         generator.accept(customer);
         assertNotNull(customer.getName());
     }
