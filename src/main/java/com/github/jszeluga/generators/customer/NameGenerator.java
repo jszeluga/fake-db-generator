@@ -1,7 +1,7 @@
 package com.github.jszeluga.generators.customer;
 
 import com.github.jszeluga.entity.dimension.CustomerDimension;
-import com.github.jszeluga.generators.Generator;
+import com.github.jszeluga.generators.AbstractGenerator;
 import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.zip.GZIPInputStream;
 
-public class NameGenerator implements Generator<CustomerDimension> {
+public class NameGenerator extends AbstractGenerator<CustomerDimension> {
 
     private static List<String> firstNames;
     private static List<String> lastNames;

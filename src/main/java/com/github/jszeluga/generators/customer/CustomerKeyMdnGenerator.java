@@ -1,13 +1,13 @@
 package com.github.jszeluga.generators.customer;
 
 import com.github.jszeluga.entity.dimension.CustomerDimension;
-import com.github.jszeluga.generators.Generator;
+import com.github.jszeluga.generators.AbstractGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class CustomerKeyMdnGenerator implements Generator<CustomerDimension> {
+public class CustomerKeyMdnGenerator extends AbstractGenerator<CustomerDimension> {
 
     private List<Long> customerKeys = new ArrayList<>();
 

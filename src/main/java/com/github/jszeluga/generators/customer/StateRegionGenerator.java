@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.github.jszeluga.entity.dimension.CustomerDimension;
-import com.github.jszeluga.generators.Generator;
+import com.github.jszeluga.generators.AbstractGenerator;
 
 import java.io.InputStream;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.zip.GZIPInputStream;
 
-public class StateRegionGenerator implements Generator<CustomerDimension> {
+public class StateRegionGenerator extends AbstractGenerator<CustomerDimension> {
 
     private static CsvMapper csvMapper = new CsvMapper();
     private static List<StateRegion> stateRegionList;
