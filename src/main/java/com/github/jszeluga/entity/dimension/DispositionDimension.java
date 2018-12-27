@@ -1,11 +1,6 @@
 package com.github.jszeluga.entity.dimension;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "DISPOSITION_DIM")
@@ -29,7 +24,7 @@ public class DispositionDimension {
     return dispositionKey;
   }
 
-  public void setDispositionKey(final long dispositionKey) {
+  public void setDispositionKey(long dispositionKey) {
     this.dispositionKey = dispositionKey;
   }
 
@@ -37,7 +32,7 @@ public class DispositionDimension {
     return outcome;
   }
 
-  public void setOutcome(final String outcome) {
+  public void setOutcome(String outcome) {
     this.outcome = outcome;
   }
 
@@ -45,7 +40,7 @@ public class DispositionDimension {
     return failureDueToCell;
   }
 
-  public void setFailureDueToCell(final boolean failureDueToCell) {
+  public void setFailureDueToCell(boolean failureDueToCell) {
     this.failureDueToCell = failureDueToCell;
   }
 
@@ -53,7 +48,7 @@ public class DispositionDimension {
     return failureDueToDevice;
   }
 
-  public void setFailureDueToDevice(final boolean failureDueToDevice) {
+  public void setFailureDueToDevice(boolean failureDueToDevice) {
     this.failureDueToDevice = failureDueToDevice;
   }
 }

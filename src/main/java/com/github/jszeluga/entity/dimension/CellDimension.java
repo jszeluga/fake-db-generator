@@ -1,11 +1,6 @@
 package com.github.jszeluga.entity.dimension;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CELL_DIM")
@@ -30,7 +25,7 @@ public class CellDimension {
     return cellKey;
   }
 
-  public void setCellKey(final long cellKey) {
+  public void setCellKey(long cellKey) {
     this.cellKey = cellKey;
   }
 
@@ -38,7 +33,7 @@ public class CellDimension {
     return name;
   }
 
-  public void setName(final String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
@@ -46,7 +41,7 @@ public class CellDimension {
     return sector;
   }
 
-  public void setSector(final int sector) {
+  public void setSector(int sector) {
     this.sector = sector;
   }
 
@@ -54,7 +49,7 @@ public class CellDimension {
     return carrier;
   }
 
-  public void setCarrier(final int carrier) {
+  public void setCarrier(int carrier) {
     this.carrier = carrier;
   }
 }

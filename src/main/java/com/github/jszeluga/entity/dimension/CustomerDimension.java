@@ -32,7 +32,7 @@ public class CustomerDimension {
     return customerKey;
   }
 
-  public void setCustomerKey(final long customerKey) {
+  public void setCustomerKey(long customerKey) {
     this.customerKey = customerKey;
   }
 
@@ -40,7 +40,7 @@ public class CustomerDimension {
     return name;
   }
 
-  public void setName(final String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
@@ -48,7 +48,7 @@ public class CustomerDimension {
     return region;
   }
 
-  public void setRegion(final String region) {
+  public void setRegion(String region) {
     this.region = region;
   }
 
@@ -56,7 +56,7 @@ public class CustomerDimension {
     return state;
   }
 
-  public void setState(final String state) {
+  public void setState(String state) {
     this.state = state;
   }
 
@@ -64,7 +64,7 @@ public class CustomerDimension {
     return prePaid;
   }
 
-  public void setPrePaid(final boolean prePaid) {
+  public void setPrePaid(boolean prePaid) {
     this.prePaid = prePaid;
   }
 
@@ -72,7 +72,7 @@ public class CustomerDimension {
     return mdn;
   }
 
-  public void setMdn(final String mdn) {
+  public void setMdn(String mdn) {
     this.mdn = mdn;
   }
 }

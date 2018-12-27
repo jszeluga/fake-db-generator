@@ -55,7 +55,7 @@ public class LteFact {
     return id;
   }
 
-  public void setId(final long id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -63,7 +63,7 @@ public class LteFact {
     return date;
   }
 
-  public void setDate(final Timestamp date) {
+  public void setDate(Timestamp date) {
     this.date = date;
   }
 
@@ -71,7 +71,7 @@ public class LteFact {
     return startCell;
   }
 
-  public void setStartCell(final CellDimension startCell) {
+  public void setStartCell(CellDimension startCell) {
     this.startCell = startCell;
   }
 
@@ -79,7 +79,7 @@ public class LteFact {
     return endCell;
   }
 
-  public void setEndCell(final CellDimension endCell) {
+  public void setEndCell(CellDimension endCell) {
     this.endCell = endCell;
   }
 
@@ -87,7 +87,7 @@ public class LteFact {
     return device;
   }
 
-  public void setDevice(final DeviceDimension device) {
+  public void setDevice(DeviceDimension device) {
     this.device = device;
   }
 
@@ -95,7 +95,7 @@ public class LteFact {
     return customer;
   }
 
-  public void setCustomer(final CustomerDimension customer) {
+  public void setCustomer(CustomerDimension customer) {
     this.customer = customer;
   }
 
@@ -103,7 +103,7 @@ public class LteFact {
     return sinr;
   }
 
-  public void setSinr(final Double sinr) {
+  public void setSinr(Double sinr) {
     this.sinr = sinr;
   }
 
@@ -111,7 +111,7 @@ public class LteFact {
     return rsrp;
   }
 
-  public void setRsrp(final Double rsrp) {
+  public void setRsrp(Double rsrp) {
     this.rsrp = rsrp;
   }
 
@@ -119,7 +119,7 @@ public class LteFact {
     return disposition;
   }
 
-  public void setDisposition(final DispositionDimension disposition) {
+  public void setDisposition(DispositionDimension disposition) {
     this.disposition = disposition;
   }
 

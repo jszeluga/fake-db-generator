@@ -1,11 +1,6 @@
 package com.github.jszeluga.entity.dimension;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "DEVICE_DIM")
@@ -35,7 +30,7 @@ public class DeviceDimension {
     return deviceKey;
   }
 
-  public void setDeviceKey(final long deviceKey) {
+  public void setDeviceKey(long deviceKey) {
     this.deviceKey = deviceKey;
   }
 
@@ -43,7 +38,7 @@ public class DeviceDimension {
     return manufacturer;
   }
 
-  public void setManufacturer(final String manufacturer) {
+  public void setManufacturer(String manufacturer) {
     this.manufacturer = manufacturer;
   }
 
@@ -51,7 +46,7 @@ public class DeviceDimension {
     return model;
   }
 
-  public void setModel(final String model) {
+  public void setModel(String model) {
     this.model = model;
   }
 
@@ -59,7 +54,7 @@ public class DeviceDimension {
     return year;
   }
 
-  public void setYear(final String year) {
+  public void setYear(String year) {
     this.year = year;
   }
 
@@ -67,7 +62,7 @@ public class DeviceDimension {
     return lteDevice;
   }
 
-  public void setLteDevice(final boolean lteDevice) {
+  public void setLteDevice(boolean lteDevice) {
     this.lteDevice = lteDevice;
   }
 
@@ -75,7 +70,7 @@ public class DeviceDimension {
     return volteDevice;
   }
 
-  public void setVolteDevice(final boolean volteDevice) {
+  public void setVolteDevice(boolean volteDevice) {
     this.volteDevice = volteDevice;
   }
 }
