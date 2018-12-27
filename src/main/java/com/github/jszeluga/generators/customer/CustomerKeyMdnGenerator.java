@@ -1,0 +1,46 @@
+package com.github.jszeluga.generators.customer;
+
+import com.github.jszeluga.entity.dimension.CustomerDimension;
+import com.github.jszeluga.generators.Generator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class CustomerKeyMdnGenerator implements Generator<CustomerDimension> {
+
+    private List<Long> customerKeys = new ArrayList<>();
+
+    @Override
+    public void initialize() throws Exception {
+        //want to initialize with numbers from
+        // 555-555-0000 to 555-555-9999
+        long start = 5555550000L;
+
+        while(start <= 5555559999L){
+            customerKeys.add(start++);
+        }
+
+
+    }
+
+    @Override
+    public void accept(CustomerDimension customerDimension) {
+        if(customerDimension != null){
+            int index = ThreadLocalRandom.current().nextInt(0, customerKeys.size());
+            try {
+                Long key = customerKeys.get(index);
+                customerKeys.remove(index); //remove phone number from the list to avoid duplicates
+
+                //MDN has format of xxx-xxx-xxxx
+                String mdn = Long.toString(key);
+                mdn = mdn.replaceAll("([\\d]{3})([\\d]{3})([\\d]{4})", "$1-$2-$3");
+
+                customerDimension.setCustomerKey(key);
+                customerDimension.setMdn(mdn);
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Cannot make any more customers", e);
+            }
+        }
+    }
+}
