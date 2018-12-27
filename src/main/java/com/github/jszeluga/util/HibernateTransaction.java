@@ -6,7 +6,6 @@ import com.github.jszeluga.entity.dimension.CellDimension;
 import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.entity.dimension.DeviceDimension;
 import com.github.jszeluga.entity.dimension.DispositionDimension;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -16,10 +15,9 @@ import java.util.function.Consumer;
 
 public class HibernateTransaction {
 
-  private static final SessionFactory sessionFactory;
+  private static SessionFactory sessionFactory;
 
-  static {
-
+  public static void openSessionFactory(){
     Configuration config = new Configuration();
 
     //Dimensions
@@ -33,7 +31,6 @@ public class HibernateTransaction {
 
     sessionFactory = config.configure().buildSessionFactory();
   }
-
 
   public static void doWithSession(Consumer<Session> sessionFunc){
     if(sessionFunc!=null){

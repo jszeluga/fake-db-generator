@@ -10,7 +10,10 @@ public class MainApp {
 
   public static void main(String[] args){
 
+    HibernateTransaction.openSessionFactory();
+
     //do stuff
+
     HibernateTransaction.closeSessionFactory();
   }
 

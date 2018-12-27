@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class NameGeneratorTest extends AbstractTest {
+public class NameGeneratorTest {
 
     @Test
     public void testNameGenerator() throws Exception {
