@@ -1,9 +1,16 @@
 package com.github.jszeluga.entity.dimension;
 
+import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.generators.cell.CellGenerator;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "CELL_DIM")
+@Generators(generators = {
+        CellGenerator.class
+})
 public class CellDimension {
 
     @Id
@@ -51,5 +58,20 @@ public class CellDimension {
 
     public void setCarrier(int carrier) {
         this.carrier = carrier;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CellDimension that = (CellDimension) o;
+        return sector == that.sector &&
+                carrier == that.carrier &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, sector, carrier);
     }
 }
