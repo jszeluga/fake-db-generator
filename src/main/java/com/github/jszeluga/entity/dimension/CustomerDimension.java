@@ -1,5 +1,11 @@
 package com.github.jszeluga.entity.dimension;
 
+import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.generators.customer.CustomerKeyMdnGenerator;
+import com.github.jszeluga.generators.customer.NameGenerator;
+import com.github.jszeluga.generators.customer.PrepaidGenerator;
+import com.github.jszeluga.generators.customer.StateRegionGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,6 +13,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CUSTOMER_DIM")
+@Generators(generators = {
+        CustomerKeyMdnGenerator.class,
+        NameGenerator.class,
+        StateRegionGenerator.class,
+        PrepaidGenerator.class
+})
 public class CustomerDimension {
 
   @Id
