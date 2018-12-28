@@ -8,3 +8,5 @@ The first name data set came from Deron Meranda which was derived from the [US C
 See [this StackOverflow link](https://stackoverflow.com/questions/1803628/raw-list-of-person-names) for more information
 
 Device information came from [OpenDDR Resources](https://github.com/OpenDDRdotORG/OpenDDR-Resources)
+
+SIP information came from [4lifedev](https://github.com/4lifedev/sip_codes)

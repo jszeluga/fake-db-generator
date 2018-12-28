@@ -1,9 +1,15 @@
 package com.github.jszeluga.entity.dimension;
 
+import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.generators.disposition.DispositionGenerator;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "DISPOSITION_DIM")
+@Generators(generators = {
+        DispositionGenerator.class
+})
 public class DispositionDimension {
 
     @Id
@@ -11,14 +17,23 @@ public class DispositionDimension {
     @Column(name = "disposition_key")
     private long dispositionKey;
 
+    @Column(name = "sip_code")
+    private int sipCode;
+
+    @Column(name = "code_name")
+    private String codeName;
+
     @Column(name = "outcome")
     private String outcome;
 
-    @Column(name = "failure_due_to_cell")
-    private boolean failureDueToCell;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "failure_due_to_device")
-    private boolean failureDueToDevice;
+    @Column(name = "failure_due_to_client")
+    private boolean failureDueToClient;
+
+    @Column(name = "failure_due_to_server")
+    private boolean failureDueToServer;
 
     public long getDispositionKey() {
         return dispositionKey;
@@ -36,19 +51,43 @@ public class DispositionDimension {
         this.outcome = outcome;
     }
 
-    public boolean isFailureDueToCell() {
-        return failureDueToCell;
+    public boolean isFailureDueToClient() {
+        return failureDueToClient;
     }
 
-    public void setFailureDueToCell(boolean failureDueToCell) {
-        this.failureDueToCell = failureDueToCell;
+    public void setFailureDueToClient(boolean failureDueToClient) {
+        this.failureDueToClient = failureDueToClient;
     }
 
-    public boolean isFailureDueToDevice() {
-        return failureDueToDevice;
+    public boolean isFailureDueToServer() {
+        return failureDueToServer;
     }
 
-    public void setFailureDueToDevice(boolean failureDueToDevice) {
-        this.failureDueToDevice = failureDueToDevice;
+    public void setFailureDueToServer(boolean failureDueToServer) {
+        this.failureDueToServer = failureDueToServer;
+    }
+
+    public int getSipCode() {
+        return sipCode;
+    }
+
+    public void setSipCode(int sipCode) {
+        this.sipCode = sipCode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCodeName() {
+        return codeName;
+    }
+
+    public void setCodeName(String codeName) {
+        this.codeName = codeName;
     }
 }

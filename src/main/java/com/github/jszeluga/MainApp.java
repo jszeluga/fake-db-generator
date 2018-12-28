@@ -3,6 +3,7 @@ package com.github.jszeluga;
 import com.github.jszeluga.annotation.Generators;
 import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.entity.dimension.DeviceDimension;
+import com.github.jszeluga.entity.dimension.DispositionDimension;
 import com.github.jszeluga.generators.AbstractGenerator;
 import com.github.jszeluga.generators.Generator;
 import com.github.jszeluga.util.HibernateTransaction;
@@ -24,6 +25,10 @@ public class MainApp {
         initializeGenerators();
         generateAndInsertRecords(CustomerDimension.class, 100);
         generateAndInsertRecords(DeviceDimension.class, 100);
+
+        //special case
+        //all records are loaded in the initialize method
+        generateAndInsertRecords(DispositionDimension.class, 0);
 
         HibernateTransaction.closeSessionFactory();
     }
