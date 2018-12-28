@@ -13,8 +13,8 @@ import java.util.zip.GZIPInputStream;
 
 public class NameGenerator extends AbstractGenerator<CustomerDimension> {
 
-    private static List<String> firstNames;
-    private static List<String> lastNames;
+    private List<String> firstNames;
+    private List<String> lastNames;
 
     @Override
     public void initialize() throws Exception {

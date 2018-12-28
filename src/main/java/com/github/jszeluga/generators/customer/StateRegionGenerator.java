@@ -17,7 +17,7 @@ import java.util.zip.GZIPInputStream;
 public class StateRegionGenerator extends AbstractGenerator<CustomerDimension> {
 
     private static CsvMapper csvMapper = new CsvMapper();
-    private static List<StateRegion> stateRegionList;
+    private List<StateRegion> stateRegionList;
 
     @Override
     public void initialize() throws Exception {
