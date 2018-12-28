@@ -1,9 +1,15 @@
 package com.github.jszeluga.entity.dimension;
 
+import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.generators.device.DeviceInfoGenerator;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "DEVICE_DIM")
+@Generators(generators = {
+        DeviceInfoGenerator.class
+})
 public class DeviceDimension {
 
   @Id
@@ -11,20 +17,23 @@ public class DeviceDimension {
   @Column(name = "device_key")
   private long deviceKey;
 
-  @Column(name = "manufacturer")
-  private String manufacturer;
+  @Column(name = "vendor")
+  private String vendor;
 
   @Column(name = "model")
   private String model;
 
-  @Column(name = "year")
-  private String year;
+  @Column(name = "marketing_name")
+  private String marketingName;
 
-  @Column(name = "lte_device")
-  private boolean lteDevice;
+  @Column(name = "device_os")
+  private String deviceOs;
 
-  @Column(name = "volte_device")
-  private boolean volteDevice;
+  @Column(name = "device_os_version")
+  private String deviceOsVersion;
+
+  @Column(name = "volte")
+  private boolean volte;
 
   public long getDeviceKey() {
     return deviceKey;
@@ -34,12 +43,12 @@ public class DeviceDimension {
     this.deviceKey = deviceKey;
   }
 
-  public String getManufacturer() {
-    return manufacturer;
+  public String getVendor() {
+    return vendor;
   }
 
-  public void setManufacturer(String manufacturer) {
-    this.manufacturer = manufacturer;
+  public void setVendor(String vendor) {
+    this.vendor = vendor;
   }
 
   public String getModel() {
@@ -50,27 +59,35 @@ public class DeviceDimension {
     this.model = model;
   }
 
-  public String getYear() {
-    return year;
+  public String getMarketingName() {
+    return marketingName;
   }
 
-  public void setYear(String year) {
-    this.year = year;
+  public void setMarketingName(String marketingName) {
+    this.marketingName = marketingName;
   }
 
-  public boolean isLteDevice() {
-    return lteDevice;
+  public String getDeviceOs() {
+    return deviceOs;
   }
 
-  public void setLteDevice(boolean lteDevice) {
-    this.lteDevice = lteDevice;
+  public void setDeviceOs(String deviceOs) {
+    this.deviceOs = deviceOs;
   }
 
-  public boolean isVolteDevice() {
-    return volteDevice;
+  public String getDeviceOsVersion() {
+    return deviceOsVersion;
   }
 
-  public void setVolteDevice(boolean volteDevice) {
-    this.volteDevice = volteDevice;
+  public void setDeviceOsVersion(String deviceOsVersion) {
+    this.deviceOsVersion = deviceOsVersion;
+  }
+
+  public boolean isVolte() {
+    return volte;
+  }
+
+  public void setVolte(boolean volte) {
+    this.volte = volte;
   }
 }
