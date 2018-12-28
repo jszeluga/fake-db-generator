@@ -10,124 +10,124 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "LTE_F", indexes = {
-    @Index(columnList = "customer_key", name = "idx$custkey")
+        @Index(columnList = "customer_key", name = "idx$custkey")
 })
 public class LteFact {
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-  @Column(name = "date")
-  private Timestamp date;
+    @Column(name = "date")
+    private Timestamp date;
 
-  @ManyToOne
-  @JoinColumn(name = "disposition_key")
-  private DispositionDimension disposition;
+    @ManyToOne
+    @JoinColumn(name = "disposition_key")
+    private DispositionDimension disposition;
 
-  @ManyToOne
-  @JoinColumn(name = "start_cell_key", referencedColumnName = "cell_key")
-  private CellDimension startCell;
+    @ManyToOne
+    @JoinColumn(name = "start_cell_key", referencedColumnName = "cell_key")
+    private CellDimension startCell;
 
-  @ManyToOne
-  @JoinColumn(name = "end_cell_key", referencedColumnName = "cell_key")
-  private CellDimension endCell;
+    @ManyToOne
+    @JoinColumn(name = "end_cell_key", referencedColumnName = "cell_key")
+    private CellDimension endCell;
 
-  @ManyToOne
-  @JoinColumn(name = "device_key")
-  private DeviceDimension device;
+    @ManyToOne
+    @JoinColumn(name = "device_key")
+    private DeviceDimension device;
 
-  @ManyToOne
-  @JoinColumn(name = "customer_key")
-  private CustomerDimension customer;
+    @ManyToOne
+    @JoinColumn(name = "customer_key")
+    private CustomerDimension customer;
 
-  @Column(name = "sinr")
-  private Double sinr;
+    @Column(name = "sinr")
+    private Double sinr;
 
-  @Column(name = "rsrp")
-  private Double rsrp;
+    @Column(name = "rsrp")
+    private Double rsrp;
 
-  @Column(name = "dropped_call")
-  private boolean droppedCall;
+    @Column(name = "dropped_call")
+    private boolean droppedCall;
 
-  public long getId() {
-    return id;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-  public Timestamp getDate() {
-    return date;
-  }
+    public Timestamp getDate() {
+        return date;
+    }
 
-  public void setDate(Timestamp date) {
-    this.date = date;
-  }
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
 
-  public CellDimension getStartCell() {
-    return startCell;
-  }
+    public CellDimension getStartCell() {
+        return startCell;
+    }
 
-  public void setStartCell(CellDimension startCell) {
-    this.startCell = startCell;
-  }
+    public void setStartCell(CellDimension startCell) {
+        this.startCell = startCell;
+    }
 
-  public CellDimension getEndCell() {
-    return endCell;
-  }
+    public CellDimension getEndCell() {
+        return endCell;
+    }
 
-  public void setEndCell(CellDimension endCell) {
-    this.endCell = endCell;
-  }
+    public void setEndCell(CellDimension endCell) {
+        this.endCell = endCell;
+    }
 
-  public DeviceDimension getDevice() {
-    return device;
-  }
+    public DeviceDimension getDevice() {
+        return device;
+    }
 
-  public void setDevice(DeviceDimension device) {
-    this.device = device;
-  }
+    public void setDevice(DeviceDimension device) {
+        this.device = device;
+    }
 
-  public CustomerDimension getCustomer() {
-    return customer;
-  }
+    public CustomerDimension getCustomer() {
+        return customer;
+    }
 
-  public void setCustomer(CustomerDimension customer) {
-    this.customer = customer;
-  }
+    public void setCustomer(CustomerDimension customer) {
+        this.customer = customer;
+    }
 
-  public Double getSinr() {
-    return sinr;
-  }
+    public Double getSinr() {
+        return sinr;
+    }
 
-  public void setSinr(Double sinr) {
-    this.sinr = sinr;
-  }
+    public void setSinr(Double sinr) {
+        this.sinr = sinr;
+    }
 
-  public Double getRsrp() {
-    return rsrp;
-  }
+    public Double getRsrp() {
+        return rsrp;
+    }
 
-  public void setRsrp(Double rsrp) {
-    this.rsrp = rsrp;
-  }
+    public void setRsrp(Double rsrp) {
+        this.rsrp = rsrp;
+    }
 
-  public DispositionDimension getDisposition() {
-    return disposition;
-  }
+    public DispositionDimension getDisposition() {
+        return disposition;
+    }
 
-  public void setDisposition(DispositionDimension disposition) {
-    this.disposition = disposition;
-  }
+    public void setDisposition(DispositionDimension disposition) {
+        this.disposition = disposition;
+    }
 
-  public boolean isDroppedCall() {
-    return droppedCall;
-  }
+    public boolean isDroppedCall() {
+        return droppedCall;
+    }
 
-  public void setDroppedCall(boolean droppedCall) {
-    this.droppedCall = droppedCall;
-  }
+    public void setDroppedCall(boolean droppedCall) {
+        this.droppedCall = droppedCall;
+    }
 }

@@ -12,82 +12,82 @@ import javax.persistence.*;
 })
 public class DeviceDimension {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "device_key")
-  private long deviceKey;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "device_key")
+    private long deviceKey;
 
-  @Column(name = "vendor")
-  private String vendor;
+    @Column(name = "vendor")
+    private String vendor;
 
-  @Column(name = "model")
-  private String model;
+    @Column(name = "model")
+    private String model;
 
-  @Column(name = "marketing_name")
-  private String marketingName;
+    @Column(name = "marketing_name")
+    private String marketingName;
 
-  @Column(name = "device_os")
-  private String deviceOs;
+    @Column(name = "device_os")
+    private String deviceOs;
 
-  @Column(name = "device_os_version")
-  private String deviceOsVersion;
+    @Column(name = "device_os_version")
+    private String deviceOsVersion;
 
-  @Column(name = "volte")
-  private boolean volte;
+    @Column(name = "volte")
+    private boolean volte;
 
-  public long getDeviceKey() {
-    return deviceKey;
-  }
+    public long getDeviceKey() {
+        return deviceKey;
+    }
 
-  public void setDeviceKey(long deviceKey) {
-    this.deviceKey = deviceKey;
-  }
+    public void setDeviceKey(long deviceKey) {
+        this.deviceKey = deviceKey;
+    }
 
-  public String getVendor() {
-    return vendor;
-  }
+    public String getVendor() {
+        return vendor;
+    }
 
-  public void setVendor(String vendor) {
-    this.vendor = vendor;
-  }
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
 
-  public String getModel() {
-    return model;
-  }
+    public String getModel() {
+        return model;
+    }
 
-  public void setModel(String model) {
-    this.model = model;
-  }
+    public void setModel(String model) {
+        this.model = model;
+    }
 
-  public String getMarketingName() {
-    return marketingName;
-  }
+    public String getMarketingName() {
+        return marketingName;
+    }
 
-  public void setMarketingName(String marketingName) {
-    this.marketingName = marketingName;
-  }
+    public void setMarketingName(String marketingName) {
+        this.marketingName = marketingName;
+    }
 
-  public String getDeviceOs() {
-    return deviceOs;
-  }
+    public String getDeviceOs() {
+        return deviceOs;
+    }
 
-  public void setDeviceOs(String deviceOs) {
-    this.deviceOs = deviceOs;
-  }
+    public void setDeviceOs(String deviceOs) {
+        this.deviceOs = deviceOs;
+    }
 
-  public String getDeviceOsVersion() {
-    return deviceOsVersion;
-  }
+    public String getDeviceOsVersion() {
+        return deviceOsVersion;
+    }
 
-  public void setDeviceOsVersion(String deviceOsVersion) {
-    this.deviceOsVersion = deviceOsVersion;
-  }
+    public void setDeviceOsVersion(String deviceOsVersion) {
+        this.deviceOsVersion = deviceOsVersion;
+    }
 
-  public boolean isVolte() {
-    return volte;
-  }
+    public boolean isVolte() {
+        return volte;
+    }
 
-  public void setVolte(boolean volte) {
-    this.volte = volte;
-  }
+    public void setVolte(boolean volte) {
+        this.volte = volte;
+    }
 }

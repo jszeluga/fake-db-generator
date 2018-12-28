@@ -13,29 +13,29 @@ import java.util.function.Consumer;
 
 public class HibernateTransaction {
 
-  private static SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
-  public static void openSessionFactory(){
-    Configuration config = new Configuration();
-    Reflections reflections = ReflectionUtil.REFLECTIONS;
-    Set<Class<?>> entities = reflections.getTypesAnnotatedWith(Entity.class);
-    entities.forEach(config::addAnnotatedClass);
+    public static void openSessionFactory(){
+        Configuration config = new Configuration();
+        Reflections reflections = ReflectionUtil.REFLECTIONS;
+        Set<Class<?>> entities = reflections.getTypesAnnotatedWith(Entity.class);
+        entities.forEach(config::addAnnotatedClass);
 
-    sessionFactory = config.configure().buildSessionFactory();
-  }
-
-  public static void doWithSession(Consumer<Session> sessionFunc){
-    if(sessionFunc!=null){
-      try (Session session = sessionFactory.openSession()){
-        Transaction transaction = session.beginTransaction();
-        sessionFunc.accept(session);
-        transaction.commit();
-      }
+        sessionFactory = config.configure().buildSessionFactory();
     }
-  }
 
-  public static void closeSessionFactory(){
-    sessionFactory.close();
-  }
+    public static void doWithSession(Consumer<Session> sessionFunc){
+        if(sessionFunc!=null){
+            try (Session session = sessionFactory.openSession()){
+                Transaction transaction = session.beginTransaction();
+                sessionFunc.accept(session);
+                transaction.commit();
+            }
+        }
+    }
+
+    public static void closeSessionFactory(){
+        sessionFactory.close();
+    }
 
 }
