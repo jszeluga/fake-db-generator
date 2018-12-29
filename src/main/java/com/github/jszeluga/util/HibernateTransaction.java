@@ -13,10 +13,18 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * Helper class to handle
+ * {@link SessionFactory}, {@link Session}, and {@link Transaction}
+ */
 public class HibernateTransaction {
 
     private static SessionFactory sessionFactory;
 
+    /**
+     * Opens the Hibernate {@link SessionFactory}
+     * This should only be called once during application startup
+     */
     public static void openSessionFactory(){
         Configuration config = new Configuration();
         Reflections reflections = new Reflections("com.github.jszeluga");
@@ -26,6 +34,10 @@ public class HibernateTransaction {
         sessionFactory = config.configure().buildSessionFactory();
     }
 
+    /**
+     * Provides a shell around the Hibernate transaction and calls the {@link Consumer} on the {@link Session}
+     * @param sessionFunc the Consumer to apply to the Hibernate {@link Session}
+     */
     public static void doWithSession(Consumer<Session> sessionFunc){
         if(sessionFunc!=null){
             Transaction transaction = null;
@@ -44,6 +56,12 @@ public class HibernateTransaction {
         }
     }
 
+    /**
+     * Provides a shell around the Hibernate {@link Transaction} and returns the result from the {@link Function}
+     * @param sessionFunc The {@link Function} to apply on the Hibernate {@link Session}
+     * @param <T> The return type
+     * @return Object of type T
+     */
     public static <T> T doWithSession(Function<Session, T> sessionFunc){
         if(sessionFunc != null){
             Transaction transaction = null;
@@ -65,6 +83,10 @@ public class HibernateTransaction {
         return null;
     }
 
+    /**
+     * Closes the Hibernate {@link SessionFactory}
+     * This should only be called on application shutdown
+     */
     public static void closeSessionFactory(){
         sessionFactory.close();
     }

@@ -104,12 +104,15 @@ public class LteFactGenerator extends AbstractGenerator<LteFact> {
         lteFact.setRsrp(rsrp);
 
 
+        //Generate dates between now and a week from now UTC
         ZonedDateTime startDateTime = ZonedDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.DAYS);
         ZonedDateTime endDateTime = startDateTime.plusDays(7);
 
         long timestamp = random.nextLong(startDateTime.toInstant().toEpochMilli(), endDateTime.toInstant().toEpochMilli());
         lteFact.setDate(new Timestamp(timestamp));
 
+        //Randomly decide if this is a dropped call
+        //It doesn't take into account the disposition outcome
         boolean droppedCall = random.nextBoolean();
         lteFact.setDroppedCall(droppedCall);
     }
