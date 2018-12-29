@@ -1,4 +1,4 @@
-package com.github.jszeluga.generators.cell;
+package com.github.jszeluga.generators.dimensions.cell;
 
 import com.github.jszeluga.entity.dimension.CellDimension;
 import com.github.jszeluga.generators.AbstractGenerator;

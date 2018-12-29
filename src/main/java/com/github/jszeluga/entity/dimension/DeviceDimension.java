@@ -1,7 +1,7 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
-import com.github.jszeluga.generators.device.DeviceInfoGenerator;
+import com.github.jszeluga.generators.dimensions.device.DeviceInfoGenerator;
 
 import javax.persistence.*;
 

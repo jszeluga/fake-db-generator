@@ -1,6 +1,7 @@
 package com.github.jszeluga.util;
 
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,6 +11,7 @@ import org.reflections.Reflections;
 import javax.persistence.Entity;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class HibernateTransaction {
 
@@ -17,7 +19,7 @@ public class HibernateTransaction {
 
     public static void openSessionFactory(){
         Configuration config = new Configuration();
-        Reflections reflections = ReflectionUtil.REFLECTIONS;
+        Reflections reflections = new Reflections("com.github.jszeluga");
         Set<Class<?>> entities = reflections.getTypesAnnotatedWith(Entity.class);
         entities.forEach(config::addAnnotatedClass);
 
@@ -26,12 +28,41 @@ public class HibernateTransaction {
 
     public static void doWithSession(Consumer<Session> sessionFunc){
         if(sessionFunc!=null){
-            try (Session session = sessionFactory.openSession()){
-                Transaction transaction = session.beginTransaction();
+            Transaction transaction = null;
+            Session session = sessionFactory.getCurrentSession();
+            try {
+                transaction = session.beginTransaction();
                 sessionFunc.accept(session);
                 transaction.commit();
+            } catch (HibernateException e){
+                if(transaction != null){
+                    transaction.rollback();
+                }
+
+                throw e;
             }
         }
+    }
+
+    public static <T> T doWithSession(Function<Session, T> sessionFunc){
+        if(sessionFunc != null){
+            Transaction transaction = null;
+            Session session = sessionFactory.getCurrentSession();
+            try{
+                transaction = session.beginTransaction();
+                T ret = sessionFunc.apply(session);
+                transaction.commit();
+                return ret;
+            } catch (HibernateException e){
+                if(transaction != null){
+                    transaction.rollback();
+                }
+
+                throw e;
+            }
+        }
+
+        return null;
     }
 
     public static void closeSessionFactory(){

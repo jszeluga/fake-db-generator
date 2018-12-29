@@ -1,7 +1,7 @@
 package com.github.jszeluga.test;
 
 import com.github.jszeluga.entity.dimension.DispositionDimension;
-import com.github.jszeluga.generators.disposition.DispositionGenerator;
+import com.github.jszeluga.generators.dimensions.disposition.DispositionGenerator;
 import com.github.jszeluga.util.HibernateTransaction;
 import org.hibernate.Session;
 import org.junit.Test;

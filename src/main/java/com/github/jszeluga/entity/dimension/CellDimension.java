@@ -1,7 +1,7 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
-import com.github.jszeluga.generators.cell.CellGenerator;
+import com.github.jszeluga.generators.dimensions.cell.CellGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;

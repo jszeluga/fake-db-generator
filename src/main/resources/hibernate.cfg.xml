@@ -7,5 +7,7 @@
     <property name="connection.driver_class">org.sqlite.JDBC</property>
     <property name="hibernate.connection.url">jdbc:sqlite:phoneCompany.db</property>
     <property name="hibernate.hbm2ddl.auto">create</property>
+    <property name="hibernate.jdbc.batch_size">20</property>
+    <property name="hibernate.current_session_context_class">thread</property>
   </session-factory>
 </hibernate-configuration>

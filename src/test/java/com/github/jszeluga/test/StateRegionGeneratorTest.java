@@ -1,7 +1,7 @@
 package com.github.jszeluga.test;
 
 import com.github.jszeluga.entity.dimension.CustomerDimension;
-import com.github.jszeluga.generators.customer.StateRegionGenerator;
+import com.github.jszeluga.generators.dimensions.customer.StateRegionGenerator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

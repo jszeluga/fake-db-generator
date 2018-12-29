@@ -1,4 +1,4 @@
-package com.github.jszeluga.generators.disposition;
+package com.github.jszeluga.generators.dimensions.disposition;
 
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -30,7 +30,9 @@ public class DispositionGenerator extends AbstractGenerator<DispositionDimension
              List<DispositionDimension> dispostionList = objectReader.<DispositionDimension>readValues(scGzip).readAll();
 
              //Load the entire disposition dimension into the db
-             dispostionList.forEach(rec->HibernateTransaction.doWithSession(session->session.save(rec)));
+             HibernateTransaction.doWithSession(session->{
+                 dispostionList.forEach(session::save);
+             });
          }
 
     }

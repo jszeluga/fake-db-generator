@@ -1,4 +1,4 @@
-package com.github.jszeluga.generators.device;
+package com.github.jszeluga.generators.dimensions.device;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;

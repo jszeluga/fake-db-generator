@@ -5,10 +5,10 @@ import com.github.jszeluga.entity.dimension.CellDimension;
 import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.entity.dimension.DeviceDimension;
 import com.github.jszeluga.entity.dimension.DispositionDimension;
+import com.github.jszeluga.entity.fact.LteFact;
 import com.github.jszeluga.generators.AbstractGenerator;
 import com.github.jszeluga.generators.Generator;
 import com.github.jszeluga.util.HibernateTransaction;
-import com.github.jszeluga.util.ReflectionUtil;
 import org.reflections.Reflections;
 
 import java.util.*;
@@ -23,7 +23,7 @@ public class MainApp {
     public static void main(String[] args){
 
         HibernateTransaction.openSessionFactory();
-        initializeGenerators();
+        initializeDimensionGenerators();
         generateAndInsertRecords(CustomerDimension.class, 100);
         generateAndInsertRecords(DeviceDimension.class, 100);
         generateAndInsertRecords(CellDimension.class, 100);
@@ -31,6 +31,9 @@ public class MainApp {
         //special case
         //all records are loaded in the initialize method
         generateAndInsertRecords(DispositionDimension.class, 0);
+
+        initializeFactGenerators();
+        generateAndInsertRecords(LteFact.class, 1000);
 
         HibernateTransaction.closeSessionFactory();
     }
@@ -47,22 +50,33 @@ public class MainApp {
 
 
             //probably too fancy
-            Function<Supplier<Stream<T>>, Stream<T>> flow = Supplier::get;
+            Function<Supplier<Stream<T>>, Stream<T>> tempFlow = Supplier::get;
 
             for (Class<? extends Generator> genClass : generators.generators()) {
-                flow = flow.andThen(stream->stream.peek(generatorMap.get(genClass)));
+                tempFlow = tempFlow.andThen(stream->stream.peek(generatorMap.get(genClass)));
             }
 
-            flow.apply(recs::stream).forEach(rec->HibernateTransaction.doWithSession(session->session.save(rec)));
-
+            final Function<Supplier<Stream<T>>, Stream<T>> flow = tempFlow;
+            HibernateTransaction.doWithSession(session->{
+                flow.apply(recs::stream).forEach(session::save);
+            });
 
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    private static void initializeGenerators(){
-        Reflections reflections = ReflectionUtil.REFLECTIONS;
+    private static void initializeDimensionGenerators(){
+        Reflections reflections = new Reflections("com.github.jszeluga.generators.dimensions");
+        initializeGenerators(reflections);
+    }
+
+    private static void initializeFactGenerators() {
+        Reflections reflections = new Reflections("com.github.jszeluga.generators.facts");
+        initializeGenerators(reflections);
+    }
+
+    private static void initializeGenerators(Reflections reflections){
         Set<Class<? extends AbstractGenerator>> generators = reflections.getSubTypesOf(AbstractGenerator.class);
         generators.forEach(gen -> {
             try {

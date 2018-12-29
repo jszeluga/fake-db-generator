@@ -1,7 +1,7 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
-import com.github.jszeluga.generators.disposition.DispositionGenerator;
+import com.github.jszeluga.generators.dimensions.disposition.DispositionGenerator;
 
 import javax.persistence.*;
 

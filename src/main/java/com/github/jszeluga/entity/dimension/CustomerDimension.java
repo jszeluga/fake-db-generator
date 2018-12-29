@@ -1,10 +1,10 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
-import com.github.jszeluga.generators.customer.CustomerKeyMdnGenerator;
-import com.github.jszeluga.generators.customer.NameGenerator;
-import com.github.jszeluga.generators.customer.PrepaidGenerator;
-import com.github.jszeluga.generators.customer.StateRegionGenerator;
+import com.github.jszeluga.generators.dimensions.customer.CustomerKeyMdnGenerator;
+import com.github.jszeluga.generators.dimensions.customer.NameGenerator;
+import com.github.jszeluga.generators.dimensions.customer.PrepaidGenerator;
+import com.github.jszeluga.generators.dimensions.customer.StateRegionGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

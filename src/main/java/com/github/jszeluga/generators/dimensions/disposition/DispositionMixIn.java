@@ -1,4 +1,4 @@
-package com.github.jszeluga.generators.disposition;
+package com.github.jszeluga.generators.dimensions.disposition;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

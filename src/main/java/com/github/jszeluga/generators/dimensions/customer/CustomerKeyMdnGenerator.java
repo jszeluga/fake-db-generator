@@ -1,4 +1,4 @@
-package com.github.jszeluga.generators.customer;
+package com.github.jszeluga.generators.dimensions.customer;
 
 import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.generators.AbstractGenerator;

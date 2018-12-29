@@ -1,7 +1,7 @@
 package com.github.jszeluga.test;
 
 import com.github.jszeluga.entity.dimension.DeviceDimension;
-import com.github.jszeluga.generators.device.DeviceInfoGenerator;
+import com.github.jszeluga.generators.dimensions.device.DeviceInfoGenerator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

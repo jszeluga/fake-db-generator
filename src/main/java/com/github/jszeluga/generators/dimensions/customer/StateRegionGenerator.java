@@ -1,4 +1,4 @@
-package com.github.jszeluga.generators.customer;
+package com.github.jszeluga.generators.dimensions.customer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
