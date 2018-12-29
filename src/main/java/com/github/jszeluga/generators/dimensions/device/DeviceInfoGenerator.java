@@ -80,38 +80,42 @@ public class DeviceInfoGenerator extends AbstractGenerator<DeviceDimension> {
 
     @Override
     public void accept(DeviceDimension deviceDimension) {
-
         if(deviceDimension != null){
-            int index = ThreadLocalRandom.current().nextInt(0, deviceList.size());
-            Device device = deviceList.get(index);
-            deviceList.remove(index); //unique devices
+            if(!deviceList.isEmpty()) {
 
-            Map<String, String> propertyMap = device.getPropertyMap();
+                int index = ThreadLocalRandom.current().nextInt(0, deviceList.size());
+                Device device = deviceList.get(index);
+                deviceList.remove(index); //unique devices
 
-            //If there is a vendor property then that overrides the calculated vendor
-            if(propertyMap.containsKey("vendor")){
-                deviceDimension.setVendor(propertyMap.get("vendor"));
+                Map<String, String> propertyMap = device.getPropertyMap();
+
+                //If there is a vendor property then that overrides the calculated vendor
+                if (propertyMap.containsKey("vendor")) {
+                    deviceDimension.setVendor(propertyMap.get("vendor"));
+                } else {
+                    deviceDimension.setVendor(device.getVendor());
+                }
+
+                if (propertyMap.containsKey("model")) {
+                    deviceDimension.setModel(propertyMap.get("model"));
+                }
+                if (propertyMap.containsKey("marketing_name")) {
+                    deviceDimension.setMarketingName(propertyMap.get("marketing_name"));
+                } else if (deviceDimension.getModel() != null) {
+                    deviceDimension.setMarketingName(deviceDimension.getModel());
+                }
+                if (propertyMap.containsKey("device_os")) {
+                    deviceDimension.setDeviceOs(propertyMap.get("device_os"));
+                }
+                if (propertyMap.containsKey("device_os_version")) {
+                    deviceDimension.setDeviceOsVersion(propertyMap.get("device_os_version"));
+                }
+
+                boolean volte = ThreadLocalRandom.current().nextBoolean();
+                deviceDimension.setVolte(volte);
             } else {
-                deviceDimension.setVendor(device.getVendor());
+                throw new RuntimeException("DEVICE_DIM too large. No more data to add");
             }
-
-            if(propertyMap.containsKey("model")){
-                deviceDimension.setModel(propertyMap.get("model"));
-            }
-            if(propertyMap.containsKey("marketing_name")){
-                deviceDimension.setMarketingName(propertyMap.get("marketing_name"));
-            } else if(deviceDimension.getModel() != null){
-                deviceDimension.setMarketingName(deviceDimension.getModel());
-            }
-            if(propertyMap.containsKey("device_os")){
-                deviceDimension.setDeviceOs(propertyMap.get("device_os"));
-            }
-            if(propertyMap.containsKey("device_os_version")){
-                deviceDimension.setDeviceOsVersion(propertyMap.get("device_os_version"));
-            }
-
-            boolean volte = ThreadLocalRandom.current().nextBoolean();
-            deviceDimension.setVolte(volte);
         }
 
     }

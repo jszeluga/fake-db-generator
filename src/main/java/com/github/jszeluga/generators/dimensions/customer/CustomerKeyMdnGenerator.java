@@ -27,8 +27,8 @@ public class CustomerKeyMdnGenerator extends AbstractGenerator<CustomerDimension
     @Override
     public void accept(CustomerDimension customerDimension) {
         if(customerDimension != null){
-            int index = ThreadLocalRandom.current().nextInt(0, customerKeys.size());
-            try {
+            if(!customerKeys.isEmpty()) {
+                int index = ThreadLocalRandom.current().nextInt(0, customerKeys.size());
                 Long key = customerKeys.get(index);
                 customerKeys.remove(index); //remove phone number from the list to avoid duplicates
 
@@ -38,8 +38,8 @@ public class CustomerKeyMdnGenerator extends AbstractGenerator<CustomerDimension
 
                 customerDimension.setCustomerKey(key);
                 customerDimension.setMdn(mdn);
-            } catch (IndexOutOfBoundsException e){
-                throw new RuntimeException("Cannot make any more customers", e);
+            } else {
+                throw new RuntimeException("Cannot make any more customers");
             }
         }
     }
