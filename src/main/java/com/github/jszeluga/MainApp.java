@@ -22,18 +22,20 @@ public class MainApp {
 
     public static void main(String[] args){
 
+        //TODO: add user input processing for custom sizes
+
         HibernateTransaction.openSessionFactory();
         initializeDimensionGenerators();
-        generateAndInsertRecords(CustomerDimension.class, 100);
-        generateAndInsertRecords(DeviceDimension.class, 100);
-        generateAndInsertRecords(CellDimension.class, 100);
+        generateAndInsertRecords(CustomerDimension.class, 300);
+        generateAndInsertRecords(DeviceDimension.class, 500);
+        generateAndInsertRecords(CellDimension.class, 200);
 
         //special case
         //all records are loaded in the initialize method
         generateAndInsertRecords(DispositionDimension.class, 0);
 
         initializeFactGenerators();
-        generateAndInsertRecords(LteFact.class, 1000);
+        generateAndInsertRecords(LteFact.class, 10000);
 
         HibernateTransaction.closeSessionFactory();
     }
