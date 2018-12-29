@@ -9,6 +9,7 @@ import com.github.jszeluga.entity.fact.LteFact;
 import com.github.jszeluga.generators.AbstractGenerator;
 import com.github.jszeluga.generators.Generator;
 import com.github.jszeluga.util.HibernateTransaction;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.reflections.Reflections;
 
 import java.util.*;
@@ -22,22 +23,53 @@ public class MainApp {
 
     public static void main(String[] args){
 
-        //TODO: add user input processing for custom sizes
-
         HibernateTransaction.openSessionFactory();
         initializeDimensionGenerators();
-        generateAndInsertRecords(CustomerDimension.class, 300);
-        generateAndInsertRecords(DeviceDimension.class, 500);
-        generateAndInsertRecords(CellDimension.class, 200);
+
+        System.out.println();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter size to make CUSTOMER_DIM (default 300): ");
+        String custDimSize = scanner.nextLine();
+        int custDimNum = 300;
+        if(NumberUtils.isDigits(custDimSize)){
+            custDimNum = Integer.parseInt(custDimSize);
+        }
+
+        int deviceNum = 500;
+        System.out.print("Enter size to make DEVICE_DIM (default 500): ");
+        String deviceDimSize = scanner.nextLine();
+        if(NumberUtils.isDigits(deviceDimSize)){
+            deviceNum = Integer.parseInt(deviceDimSize);
+        }
+
+        int cellDimNum = 200;
+        System.out.print("Enter size to make CELL_DIM (default 200): ");
+        String cellDimSize = scanner.nextLine();
+        if(NumberUtils.isDigits(cellDimSize)){
+            cellDimNum = Integer.parseInt(cellDimSize);
+        }
+
+        int lteFactNum = 10000;
+        System.out.print("Enter size to make LTE_F (default 10000): ");
+        String lteFactSize = scanner.nextLine();
+        if(NumberUtils.isDigits(lteFactSize)){
+            lteFactNum = Integer.parseInt(lteFactSize);
+        }
+
+
+        generateAndInsertRecords(CustomerDimension.class, custDimNum);
+        generateAndInsertRecords(DeviceDimension.class, deviceNum);
+        generateAndInsertRecords(CellDimension.class, cellDimNum);
 
         //special case
         //all records are loaded in the initialize method
         generateAndInsertRecords(DispositionDimension.class, 0);
 
         initializeFactGenerators();
-        generateAndInsertRecords(LteFact.class, 10000);
+        generateAndInsertRecords(LteFact.class, lteFactNum);
 
         HibernateTransaction.closeSessionFactory();
+        scanner.close();
     }
 
     @SuppressWarnings("unchecked")
