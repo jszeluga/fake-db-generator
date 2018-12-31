@@ -38,6 +38,7 @@ create table DISPOSITION_DIM (
 	failure_due_to_server boolean
 );
 
+drop index if exists idx$custKey;
 drop table if exists LTE_F;
 create table LTE_F (
 	id INTEGER PRIMARY KEY,
@@ -51,3 +52,5 @@ create table LTE_F (
 	rsrp double,
 	dropped_call boolean
 );
+
+create unique index idx$custKey on LTE_F (customer_key)
