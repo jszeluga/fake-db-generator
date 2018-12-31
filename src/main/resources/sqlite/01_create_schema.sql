@@ -53,4 +53,4 @@ create table LTE_F (
 	dropped_call boolean
 );
 
-create unique index idx$custKey on LTE_F (customer_key);
+create index idx$custKey on LTE_F (customer_key);

@@ -1,30 +1,22 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.entity.InsertEntity;
 import com.github.jszeluga.generators.dimensions.cell.CellGenerator;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "CELL_DIM")
 @Generators(generators = {
         CellGenerator.class
 })
-public class CellDimension {
+public class CellDimension implements InsertEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "cell_key")
     private long cellKey;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "sector")
     private int sector;
 
-    @Column(name = "carrier")
     private int carrier;
 
 
@@ -73,5 +65,10 @@ public class CellDimension {
     @Override
     public int hashCode() {
         return Objects.hash(name, sector, carrier);
+    }
+
+    @Override
+    public Object[] getInsertParams() {
+        return new Object[]{carrier,name,sector};
     }
 }

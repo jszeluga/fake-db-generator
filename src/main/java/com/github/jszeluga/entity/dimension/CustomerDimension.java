@@ -1,43 +1,31 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.entity.InsertEntity;
 import com.github.jszeluga.generators.dimensions.customer.CustomerKeyMdnGenerator;
 import com.github.jszeluga.generators.dimensions.customer.NameGenerator;
 import com.github.jszeluga.generators.dimensions.customer.PrepaidGenerator;
 import com.github.jszeluga.generators.dimensions.customer.StateRegionGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "CUSTOMER_DIM")
 @Generators(generators = {
         CustomerKeyMdnGenerator.class,
         NameGenerator.class,
         StateRegionGenerator.class,
         PrepaidGenerator.class
 })
-public class CustomerDimension {
+public class CustomerDimension implements InsertEntity {
 
-    @Id
-    @Column(name = "customer_key")
     private long customerKey;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "mdn")
     private String mdn;
 
-    @Column(name = "region")
     private String region;
 
-    @Column(name = "state")
     private String state;
 
-    @Column(name = "pre_paid")
     private boolean prePaid;
 
     public long getCustomerKey() {
@@ -86,5 +74,10 @@ public class CustomerDimension {
 
     public void setMdn(String mdn) {
         this.mdn = mdn;
+    }
+
+    @Override
+    public Object[] getInsertParams() {
+        return new Object[]{customerKey,mdn,name,region,state,prePaid};
     }
 }

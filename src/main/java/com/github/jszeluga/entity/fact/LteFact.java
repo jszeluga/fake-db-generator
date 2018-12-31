@@ -1,52 +1,35 @@
 package com.github.jszeluga.entity.fact;
 
 import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.entity.InsertEntity;
 import com.github.jszeluga.generators.facts.lte.LteFactGenerator;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "LTE_F", indexes = {
-        @Index(columnList = "customer_key", name = "idx$custkey")
-})
 @Generators(generators = {
         LteFactGenerator.class
 })
-public class LteFact {
+public class LteFact implements InsertEntity {
 
-    //TODO: Use actual entities and do the join properly
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "date")
-    private Timestamp date;
+    private Timestamp recordDate;
 
-    @Column(name = "disposition_key")
     private long dispositionKey;
 
-    @Column(name = "start_cell_key")
     private long startCellKey;
 
-    @Column(name = "end_cell_key")
     private long endCellKey;
 
-    @Column(name = "device_key")
     private long deviceKey;
 
-    @Column(name = "customer_key")
     private long customerKey;
 
-    @Column(name = "sinr")
     private Double sinr;
 
-    @Column(name = "rsrp")
     private Double rsrp;
 
-    @Column(name = "dropped_call")
     private boolean droppedCall;
 
     public long getId() {
@@ -57,12 +40,12 @@ public class LteFact {
         this.id = id;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public Timestamp getRecordDate() {
+        return recordDate;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setRecordDate(Timestamp recordDate) {
+        this.recordDate = recordDate;
     }
 
     public Double getSinr() {
@@ -127,5 +110,10 @@ public class LteFact {
 
     public void setCustomerKey(long customerKey) {
         this.customerKey = customerKey;
+    }
+
+    @Override
+    public Object[] getInsertParams() {
+        return new Object[]{customerKey,deviceKey,dispositionKey,recordDate,startCellKey,endCellKey,sinr,rsrp,droppedCall};
     }
 }

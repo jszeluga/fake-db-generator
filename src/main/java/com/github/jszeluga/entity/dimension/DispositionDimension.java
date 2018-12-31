@@ -1,38 +1,26 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.entity.InsertEntity;
 import com.github.jszeluga.generators.dimensions.disposition.DispositionGenerator;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "DISPOSITION_DIM")
 @Generators(generators = {
         DispositionGenerator.class
 })
-public class DispositionDimension {
+public class DispositionDimension implements InsertEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "disposition_key")
     private long dispositionKey;
 
-    @Column(name = "sip_code")
     private int sipCode;
 
-    @Column(name = "code_name")
     private String codeName;
 
-    @Column(name = "outcome")
     private String outcome;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "failure_due_to_client")
     private boolean failureDueToClient;
 
-    @Column(name = "failure_due_to_server")
     private boolean failureDueToServer;
 
     public long getDispositionKey() {
@@ -89,5 +77,10 @@ public class DispositionDimension {
 
     public void setCodeName(String codeName) {
         this.codeName = codeName;
+    }
+
+    @Override
+    public Object[] getInsertParams() {
+        return new Object[]{sipCode,codeName,outcome,description,failureDueToClient,failureDueToServer};
     }
 }

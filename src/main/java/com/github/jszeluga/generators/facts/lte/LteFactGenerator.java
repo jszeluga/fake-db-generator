@@ -6,16 +6,14 @@ import com.github.jszeluga.entity.dimension.DeviceDimension;
 import com.github.jszeluga.entity.dimension.DispositionDimension;
 import com.github.jszeluga.entity.fact.LteFact;
 import com.github.jszeluga.generators.AbstractGenerator;
-import com.github.jszeluga.util.HibernateTransaction;
+import com.github.jszeluga.util.DataSourceUtil;
+import org.apache.commons.dbutils.QueryRunner;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -33,20 +31,73 @@ public class LteFactGenerator extends AbstractGenerator<LteFact> {
     @SuppressWarnings("unchecked")
     public void initialize() throws Exception {
 
-        cells = HibernateTransaction.doWithSession(session->{
-            return session.createQuery("from CellDimension").getResultList();
+        QueryRunner queryRunner = new QueryRunner(DataSourceUtil.getDataSource());
+
+
+        cells = queryRunner.query("select * from cell_dim", rs->{
+            List<CellDimension> recs = new ArrayList<>();
+            while(rs.next()){
+                CellDimension cell = new CellDimension();
+                cell.setName(rs.getString("name"));
+                cell.setSector(rs.getInt("sector"));
+                cell.setCarrier(rs.getInt("carrier"));
+                cell.setCellKey(rs.getLong("cell_key"));
+
+                recs.add(cell);
+            }
+
+            return recs;
         });
 
-        List<DispositionDimension> dispositions = HibernateTransaction.doWithSession(session->{
-            return session.createQuery("from DispositionDimension", DispositionDimension.class).getResultList();
+        List<DispositionDimension> dispositions = queryRunner.query("select * from disposition_dim", rs->{
+            List<DispositionDimension> recs= new ArrayList<>();
+            while(rs.next()){
+                DispositionDimension disp = new DispositionDimension();
+                disp.setDispositionKey(rs.getLong("disposition_key"));
+                disp.setSipCode(rs.getInt("sip_code"));
+                disp.setCodeName(rs.getString("code_name"));
+                disp.setOutcome(rs.getString("outcome"));
+                disp.setDispositionKey(rs.getShort("description"));
+                disp.setFailureDueToClient(rs.getBoolean("failure_due_to_client"));
+                disp.setFailureDueToServer(rs.getBoolean("failure_due_to_server"));
+
+                recs.add(disp);
+            }
+
+            return recs;
+        });
+        customers = queryRunner.query("select * from customer_dim", rs->{
+            List<CustomerDimension> recs= new ArrayList<>();
+            while(rs.next()){
+                CustomerDimension cust = new CustomerDimension();
+                cust.setCustomerKey(rs.getLong("customer_key"));
+                cust.setMdn(rs.getString("mdn"));
+                cust.setName(rs.getString("name"));
+                cust.setRegion(rs.getString("region"));
+                cust.setState(rs.getString("state"));
+                cust.setPrePaid(rs.getBoolean("pre_paid"));
+
+                recs.add(cust);
+            }
+
+            return recs;
         });
 
-        customers = HibernateTransaction.doWithSession(session->{
-            return session.createQuery("from CustomerDimension", CustomerDimension.class).getResultList();
-        });
+        devices = queryRunner.query("select * from device_dim", rs->{
+            List<DeviceDimension> recs = new ArrayList<>();
+            while(rs.next()){
+                DeviceDimension device = new DeviceDimension();
+                device.setDeviceKey(rs.getLong("device_key"));
+                device.setVendor(rs.getString("vendor"));
+                device.setModel(rs.getString("model"));
+                device.setMarketingName(rs.getString("marketing_name"));
+                device.setDeviceOs(rs.getString("device_os"));
+                device.setDeviceOsVersion(rs.getString("device_os_version"));
+                device.setVolte(rs.getBoolean("volte"));
 
-        devices = HibernateTransaction.doWithSession(session->{
-            return session.createQuery("from DeviceDimension", DeviceDimension.class).getResultList();
+                recs.add(device);
+            }
+            return recs;
         });
 
 
@@ -109,7 +160,7 @@ public class LteFactGenerator extends AbstractGenerator<LteFact> {
         ZonedDateTime endDateTime = startDateTime.plusDays(7);
 
         long timestamp = random.nextLong(startDateTime.toInstant().toEpochMilli(), endDateTime.toInstant().toEpochMilli());
-        lteFact.setDate(new Timestamp(timestamp));
+        lteFact.setRecordDate(new Timestamp(timestamp));
 
         //Randomly decide if this is a dropped call
         //It doesn't take into account the disposition outcome

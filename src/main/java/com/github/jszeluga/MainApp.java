@@ -1,6 +1,7 @@
 package com.github.jszeluga;
 
 import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.entity.InsertEntity;
 import com.github.jszeluga.entity.dimension.CellDimension;
 import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.entity.dimension.DeviceDimension;
@@ -8,10 +9,16 @@ import com.github.jszeluga.entity.dimension.DispositionDimension;
 import com.github.jszeluga.entity.fact.LteFact;
 import com.github.jszeluga.generators.AbstractGenerator;
 import com.github.jszeluga.generators.Generator;
-import com.github.jszeluga.util.HibernateTransaction;
+import com.github.jszeluga.util.DataSourceUtil;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.reflections.Reflections;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -20,10 +27,10 @@ import java.util.stream.Stream;
 public class MainApp {
 
     private static Map<Class<? extends Generator>, Generator> generatorMap = new HashMap<>();
+    private static QueryRunner queryRunner = new QueryRunner(DataSourceUtil.getDataSource());
 
     public static void main(String[] args){
-
-        HibernateTransaction.openSessionFactory();
+        initializeDatabase();
         initializeDimensionGenerators();
 
         System.out.println();
@@ -67,13 +74,11 @@ public class MainApp {
 
         initializeFactGenerators();
         generateAndInsertRecords(LteFact.class, lteFactNum);
-
-        HibernateTransaction.closeSessionFactory();
         scanner.close();
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> void generateAndInsertRecords(Class<T> clazz, int total){
+    private static <T extends InsertEntity> void generateAndInsertRecords(Class<T> clazz, int total){
         List<T> recs = new ArrayList<>();
         try {
             for (int i = 0; i < total; i++) {
@@ -82,18 +87,21 @@ public class MainApp {
 
             Generators generators = clazz.getDeclaredAnnotation(Generators.class);
 
-
             //probably too fancy
-            Function<Supplier<Stream<T>>, Stream<T>> tempFlow = Supplier::get;
+            Function<Supplier<Stream<T>>, Stream<T>> flow = Supplier::get;
 
             for (Class<? extends Generator> genClass : generators.generators()) {
-                tempFlow = tempFlow.andThen(stream->stream.peek(generatorMap.get(genClass)));
+                flow = flow.andThen(stream->stream.peek(generatorMap.get(genClass)));
             }
 
-            final Function<Supplier<Stream<T>>, Stream<T>> flow = tempFlow;
-            HibernateTransaction.doWithSession(session->{
-                flow.apply(recs::stream).forEach(session::save);
-            });
+            String insertStatement = DataSourceUtil.getInsertStatement(clazz);
+            Object[][] params = flow.apply(recs::stream).map(InsertEntity::getInsertParams).toArray(Object[][]::new);
+
+            try(Connection conn = queryRunner.getDataSource().getConnection()) {
+                conn.setAutoCommit(false);
+                queryRunner.batch(conn, insertStatement, params);
+                conn.commit();
+            }
 
         } catch (Exception e){
             throw new RuntimeException(e);
@@ -121,5 +129,23 @@ public class MainApp {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private static void initializeDatabase(){
+        //get DDL
+        try (
+                InputStream schemaStream = MainApp.class.getClassLoader().getResourceAsStream("sqlite/01_create_schema.sql");
+                Connection connection = DataSourceUtil.getDataSource().getConnection();
+                Statement statement = connection.createStatement()
+        ) {
+            Objects.requireNonNull(schemaStream);
+
+            String ddl = IOUtils.toString(schemaStream, StandardCharsets.UTF_8);
+            statement.executeUpdate(ddl);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+
     }
 }

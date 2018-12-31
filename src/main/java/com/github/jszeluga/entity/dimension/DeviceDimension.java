@@ -1,38 +1,27 @@
 package com.github.jszeluga.entity.dimension;
 
 import com.github.jszeluga.annotation.Generators;
+import com.github.jszeluga.entity.InsertEntity;
 import com.github.jszeluga.generators.dimensions.device.DeviceInfoGenerator;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "DEVICE_DIM")
 @Generators(generators = {
         DeviceInfoGenerator.class
 })
-public class DeviceDimension {
+public class DeviceDimension implements InsertEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "device_key")
     private long deviceKey;
 
-    @Column(name = "vendor")
     private String vendor;
 
-    @Column(name = "model")
     private String model;
 
-    @Column(name = "marketing_name")
     private String marketingName;
 
-    @Column(name = "device_os")
     private String deviceOs;
 
-    @Column(name = "device_os_version")
     private String deviceOsVersion;
 
-    @Column(name = "volte")
     private boolean volte;
 
     public long getDeviceKey() {
@@ -89,5 +78,10 @@ public class DeviceDimension {
 
     public void setVolte(boolean volte) {
         this.volte = volte;
+    }
+
+    @Override
+    public Object[] getInsertParams() {
+        return new Object[]{vendor,model,marketingName,deviceOs,deviceOsVersion,volte};
     }
 }
