@@ -10,7 +10,6 @@ import com.github.jszeluga.entity.fact.LteFact;
 import com.github.jszeluga.generators.AbstractGenerator;
 import com.github.jszeluga.generators.Generator;
 import com.github.jszeluga.util.DataSourceUtil;
-import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.reflections.Reflections;
@@ -18,6 +17,7 @@ import org.reflections.Reflections;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 import java.util.function.Function;
@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 public class MainApp {
 
     private static Map<Class<? extends Generator>, Generator> generatorMap = new HashMap<>();
-    private static QueryRunner queryRunner = new QueryRunner(DataSourceUtil.getDataSource());
 
     public static void main(String[] args){
         initializeDatabase();
@@ -97,11 +96,13 @@ public class MainApp {
             String insertStatement = DataSourceUtil.getInsertStatement(clazz);
             Object[][] params = flow.apply(recs::stream).map(InsertEntity::getInsertParams).toArray(Object[][]::new);
 
-            try(Connection conn = queryRunner.getDataSource().getConnection()) {
-                conn.setAutoCommit(false);
-                queryRunner.batch(conn, insertStatement, params);
-                conn.commit();
-            }
+            DataSourceUtil.doInTransaction((queryRunner, connection) -> {
+                try {
+                    return queryRunner.batch(connection, insertStatement, params);
+                } catch (SQLException e){
+                    throw new RuntimeException(e);
+                }
+            });
 
         } catch (Exception e){
             throw new RuntimeException(e);

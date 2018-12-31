@@ -7,11 +7,9 @@ import com.github.jszeluga.entity.InsertEntity;
 import com.github.jszeluga.entity.dimension.DispositionDimension;
 import com.github.jszeluga.generators.AbstractGenerator;
 import com.github.jszeluga.util.DataSourceUtil;
-import org.apache.commons.dbutils.QueryRunner;
 
-import javax.sql.DataSource;
 import java.io.InputStream;
-import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
@@ -36,14 +34,14 @@ public class DispositionGenerator extends AbstractGenerator<DispositionDimension
              //Load the entire disposition dimension into the db
              String insertStatement = DataSourceUtil.getInsertStatement(DispositionDimension.class);
              Object[][] params = dispostionList.stream().map(InsertEntity::getInsertParams).toArray(Object[][]::new);
-             DataSource dataSource = DataSourceUtil.getDataSource();
-             QueryRunner queryRunner = new QueryRunner(dataSource);
 
-             try(Connection conn = dataSource.getConnection()) {
-                 conn.setAutoCommit(false);
-                 queryRunner.batch(conn, insertStatement, params);
-                 conn.commit();
-             }
+             DataSourceUtil.doInTransaction((queryRunner, connection) -> {
+                try {
+                    return queryRunner.batch(connection, insertStatement, params);
+                } catch (SQLException e){
+                    throw new RuntimeException(e);
+                }
+             });
          }
 
     }

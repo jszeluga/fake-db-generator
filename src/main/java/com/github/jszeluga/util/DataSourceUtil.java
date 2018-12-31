@@ -6,11 +6,16 @@ import com.github.jszeluga.entity.dimension.CustomerDimension;
 import com.github.jszeluga.entity.dimension.DeviceDimension;
 import com.github.jszeluga.entity.dimension.DispositionDimension;
 import com.github.jszeluga.entity.fact.LteFact;
+import org.apache.commons.dbutils.QueryRunner;
 import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiFunction;
 
 public class DataSourceUtil {
 
@@ -25,8 +30,6 @@ public class DataSourceUtil {
         insertStatementMap.put(LteFact.class, "insert into lte_f(customer_key,device_key,disposition_key,record_date,start_cell_key,end_cell_key,sinr,rsrp,dropped_call) values (?,?,?,?,?,?,?,?,?)");
     }
 
-    //TODO: use lambda with Connection and statement to do inserts
-
     public static DataSource getDataSource(){
         if(dataSource==null){
             dataSource = new SQLiteDataSource();
@@ -39,5 +42,37 @@ public class DataSourceUtil {
 
     public static String getInsertStatement(Class<? extends InsertEntity> clazz){
         return insertStatementMap.get(clazz);
+    }
+
+    public static <T> T doInTransaction(BiFunction<QueryRunner, Connection, T> queryFunction) {
+        Objects.requireNonNull(queryFunction);
+
+        QueryRunner queryRunner = new QueryRunner(getDataSource());
+        Connection connection = null;
+        try {
+            connection = queryRunner.getDataSource().getConnection();
+            connection.setAutoCommit(false);
+            T ret = queryFunction.apply(queryRunner, connection);
+            connection.commit();
+
+            return ret;
+        } catch (Exception e){
+            if(connection!=null){
+                try {
+                    connection.rollback();
+                } catch (SQLException ex){
+                    throw new RuntimeException(ex);
+                }
+            }
+            throw new RuntimeException(e);
+        } finally {
+            if(connection!=null){
+                try {
+                    connection.close();
+                } catch (SQLException e){
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 }
