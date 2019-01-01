@@ -2,6 +2,7 @@ package com.github.jszeluga.test;
 
 import com.github.jszeluga.entity.dimension.DispositionDimension;
 import com.github.jszeluga.generators.dimensions.disposition.DispositionGenerator;
+import com.github.jszeluga.util.DataSourceUtil;
 import org.apache.commons.dbutils.QueryRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +11,10 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(DispositionGenerator.class)
+@PrepareForTest(DataSourceUtil.class)
 public class DispositionGeneratorTest {
 
     @Test
@@ -27,10 +30,12 @@ public class DispositionGeneratorTest {
         List<DispositionDimension> recs = new ArrayList<>();
 
         QueryRunner mockRunner = Mockito.mock(QueryRunner.class);
-        PowerMockito.whenNew(QueryRunner.class).withAnyArguments().thenReturn(mockRunner);
+        Connection mockConnection = Mockito.mock(Connection.class);
+
+        PowerMockito.spy(DataSourceUtil.class);
 
         PowerMockito.doAnswer(ctx->{
-            Object[][] insertParams = ctx.getArgument(1);
+            Object[][] insertParams = ctx.getArgument(2);
             for(Object[] param : insertParams){
                 DispositionDimension rec = new DispositionDimension();
                 rec.setSipCode((int)param[0]);
@@ -42,7 +47,13 @@ public class DispositionGeneratorTest {
                 recs.add(rec);
             }
             return null;
-        }).when(mockRunner).batch(anyString(), any());
+        }).when(mockRunner).batch(any(Connection.class), anyString(), any());
+
+        PowerMockito.doAnswer(ctx->{
+            BiFunction<QueryRunner, Connection, int[]> function = ctx.getArgument(0);
+            function.apply(mockRunner, mockConnection);
+            return null;
+        }).when(DataSourceUtil.class, "doInTransaction", any());
 
         DispositionGenerator generator = new DispositionGenerator();
         generator.initialize();
